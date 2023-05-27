@@ -10,7 +10,7 @@ const Filter: React.FC<FilterProps> = () => {
   const { isLoading, error, isAuthenticated, getAccessTokenSilently } =
     useAuth0();
   const [accessToken, setAccessToken] = useState('');
-  const [data, setData] = useState<{ columns: any[] }>();
+  const [data, setData] = useState<any[]>();
 
   useEffect(() => {
     const getAccessToken = async () => {
@@ -34,8 +34,9 @@ const Filter: React.FC<FilterProps> = () => {
           const response = await axios.get(`${config.apiBase}/synopsis`, {
             headers: { Authorization: `Bearer ${accessToken}` },
           });
+          console.log(response.data.data.columns);
 
-          setData(response.data.data);
+          setData(response.data.data.columns);
         } catch (error) {
           console.error('Error fetching data:', error);
         }
@@ -50,9 +51,7 @@ const Filter: React.FC<FilterProps> = () => {
       {isLoading || !data ? (
         <span>No data...</span>
       ) : (
-        <FilterSelector
-          menuItems={data.columns.map((item) => item.sampleHeader)}
-        ></FilterSelector>
+        <FilterSelector menuItems={data}></FilterSelector>
       )}
     </div>
   );

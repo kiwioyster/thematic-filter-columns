@@ -1,3 +1,4 @@
+import { Tooltip, Typography } from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -5,7 +6,7 @@ import Select from '@material-ui/core/Select';
 import React, { useState } from 'react';
 
 interface Props {
-  menuItems: string[];
+  menuItems: { sampleHeader: string; sample: string[] }[];
 }
 
 const FilterSelector: React.FC<Props> = ({ menuItems }) => {
@@ -39,10 +40,24 @@ const FilterSelector: React.FC<Props> = ({ menuItems }) => {
           value={age}
           onChange={handleChange}
         >
-          {menuItems.map((item) => (
-            <MenuItem key={item} value={item}>
-              {item}
-            </MenuItem>
+          {menuItems.map((item, index) => (
+            <Tooltip
+              key={index}
+              title={
+                <React.Fragment>
+                  {item.sample.map((s) => (
+                    <Typography key={s}>
+                      <li>{s}</li>
+                    </Typography>
+                  ))}
+                </React.Fragment>
+              }
+              placement='right'
+            >
+              <MenuItem key={index} value={item.sampleHeader}>
+                {item.sampleHeader}
+              </MenuItem>
+            </Tooltip>
           ))}
         </Select>
       </FormControl>
