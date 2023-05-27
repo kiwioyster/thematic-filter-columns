@@ -45,7 +45,17 @@ const Filter: React.FC<FilterProps> = () => {
     fetchData();
   }, [accessToken]);
 
-  return <div></div>;
+  return (
+    <div>
+      {isLoading || !data ? (
+        <span>No data...</span>
+      ) : (
+        <FilterSelector
+          menuItems={data.columns.map((item) => item.sampleHeader)}
+        ></FilterSelector>
+      )}
+    </div>
+  );
 };
 
 export default Filter;
