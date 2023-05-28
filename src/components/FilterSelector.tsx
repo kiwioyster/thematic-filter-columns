@@ -5,6 +5,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import React, { useState } from 'react';
 import { IData } from '../definitions/Data';
+import FilterTooltip from './FilterTooltip';
 
 interface Props {
   menuItems: IData[];
@@ -38,15 +39,7 @@ const FilterSelector: React.FC<Props> = ({ menuItems, addFilterColumn }) => {
             // further investigation is needed to understand why. a hack to get around this is to add a small delay on displaying the tooltip.
             <Tooltip
               key={index}
-              title={
-                <React.Fragment>
-                  {item.sample.map((s) => (
-                    <Typography key={s}>
-                      <li>{s}</li>
-                    </Typography>
-                  ))}
-                </React.Fragment>
-              }
+              title={<FilterTooltip sample={item.sample}></FilterTooltip>}
               placement='right'
             >
               <MenuItem
