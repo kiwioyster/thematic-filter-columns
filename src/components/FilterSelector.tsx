@@ -4,18 +4,15 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import React, { useState } from 'react';
+import { IData } from '../definitions/Data';
 
 interface Props {
-  menuItems: { sampleHeader: string; sample: string[] }[];
+  menuItems: IData[];
+  addFilterColumn: (item: IData) => void;
 }
 
-const FilterSelector: React.FC<Props> = ({ menuItems }) => {
-  const [age, setAge] = useState('');
+const FilterSelector: React.FC<Props> = ({ menuItems, addFilterColumn }) => {
   const [open, setOpen] = useState(false);
-
-  const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setAge(event.target.value as string);
-  };
 
   const handleClose = () => {
     setOpen(false);
@@ -28,19 +25,17 @@ const FilterSelector: React.FC<Props> = ({ menuItems }) => {
   return (
     <div>
       <FormControl>
-        <InputLabel id='demo-controlled-open-select-label'>
-          Add Filter
-        </InputLabel>
+        <InputLabel id='select-label'>Add Filter</InputLabel>
         <Select
-          labelId='demo-controlled-open-select-label'
-          id='demo-controlled-open-select'
+          labelId='select-label'
+          id='open-select'
           open={open}
           onClose={handleClose}
           onOpen={handleOpen}
-          value={age}
-          onChange={handleChange}
         >
           {menuItems.map((item, index) => (
+            // there seems to be a bug in the tooltip mui component when combined with selector. when you open the selector dropdown it opens the tooltip of the item that was on your cursor's location and it does not disappear until you mouse over that item again.
+            // further investigation is needed to understand why. a hack to get around this is to add a small delay on displaying the tooltip.
             <Tooltip
               key={index}
               title={
@@ -54,7 +49,11 @@ const FilterSelector: React.FC<Props> = ({ menuItems }) => {
               }
               placement='right'
             >
-              <MenuItem key={index} value={item.sampleHeader}>
+              <MenuItem
+                key={index}
+                value={item.sampleHeader}
+                onClick={() => addFilterColumn(item)}
+              >
                 {item.sampleHeader}
               </MenuItem>
             </Tooltip>
