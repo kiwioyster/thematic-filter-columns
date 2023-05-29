@@ -1,19 +1,20 @@
-import React, { Component } from "react";
-import { Router, Route, Switch } from "react-router-dom";
-import { Container } from "reactstrap";
+import React, { Component } from 'react';
+import { Router, Route, Switch } from 'react-router-dom';
+import { Container } from 'reactstrap';
 
-import Loading from "./components/Loading";
-import NavBar from "./components/NavBar";
-import Home from "./components/Home";
-import Profile from "./components/Profile";
-import { Auth0ContextInterface, withAuth0 } from "@auth0/auth0-react";
-import history from "./utils/history";
+import Loading from './components/Loading';
+import NavBar from './components/NavBar';
+import Home from './components/Home';
+import Profile from './components/Profile';
+import { Auth0ContextInterface, withAuth0 } from '@auth0/auth0-react';
+import history from './utils/history';
 
 // styles
-import "./App.css";
+import './App.css';
 
 // fontawesome
-import initFontAwesome from "./utils/initFontAwesome";
+import initFontAwesome from './utils/initFontAwesome';
+import Filter from './components/Filter';
 initFontAwesome();
 
 interface AppProps {
@@ -21,8 +22,7 @@ interface AppProps {
 }
 
 class App extends Component<AppProps> {
-
-  render () {
+  render() {
     const { isLoading, error } = this.props.auth0;
 
     if (error) {
@@ -35,18 +35,19 @@ class App extends Component<AppProps> {
 
     return (
       <Router history={history}>
-        <div id="app" className="d-flex flex-column h-100">
+        <div id='app' className='d-flex flex-column h-100'>
           <NavBar />
-          <Container className="flex-grow-1 mt-5">
+          <Container className='flex-grow-1 mt-5'>
             <Switch>
-              <Route path="/" exact component={Home} />
-              <Route path="/profile" component={Profile} />
+              <Route path='/' exact component={Home} />
+              <Route path='/filter' exact component={Filter} />
+              <Route path='/profile' component={Profile} />
             </Switch>
           </Container>
         </div>
       </Router>
     );
   }
-};
+}
 
 export default withAuth0(App);
